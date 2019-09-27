@@ -847,14 +847,14 @@
       input.type = 'file';
       input.multiple = true;
 
-      // html5 特征
+      // html5 特征 (html5 features)
       if (window.FormData && input.files) {
-        // 上传目录特征
+        // 上传目录特征 (upload menu feature)
         if (typeof input.webkitdirectory === 'boolean' || typeof input.directory === 'boolean') {
           this.features.directory = true;
         }
 
-        // 拖拽特征
+        // 拖拽特征 (drag and drop feature)
         if (this.features.html5 && typeof input.ondrop !== 'undefined') {
           this.features.drop = true;
         }
@@ -862,7 +862,7 @@
         this.features.html5 = false;
       }
 
-      // files 定位缓存
+      // files 定位缓存 (files location cache)
       this.maps = {};
       if (this.files) {
         for (var i = 0; i < this.files.length; i++) {
@@ -873,12 +873,12 @@
 
       this.$nextTick(function () {
 
-        // 更新下父级
+        // 更新下父级 (update parent)
         if (this.$parent) {
           this.$parent.$forceUpdate();
         }
 
-        // 拖拽渲染
+        // 拖拽渲染 (drag and drop render)
         this.watchDrop(this.drop);
       });
     },
@@ -889,22 +889,22 @@
      * @return {[type]} [description]
      */
     beforeDestroy: function beforeDestroy() {
-      // 已销毁
+      // 已销毁 (already destroyed)
       this.destroy = true;
 
-      // 设置成不激活
+      // 设置成不激活 (set to not activated)
       this.active = false;
     },
 
 
     computed: {
       /**
-       * uploading 正在上传的线程
+       * uploading 正在上传的线程 (uploading thread)
        * @return {[type]} [description]
        */
 
       /**
-       * uploaded 文件列表是否全部已上传
+       * uploaded 文件列表是否全部已上传 (whether file list has been completely uploaded)
        * @return {[type]} [description]
        */
       uploaded: function uploaded() {
@@ -945,7 +945,7 @@
 
         var oldMaps = this.maps;
 
-        // 重写 maps 缓存
+        // 重写 maps 缓存 (rewrite maps cache)
         this.maps = {};
         for (var i = 0; i < this.files.length; i++) {
           var file = this.files[i];
@@ -972,16 +972,16 @@
 
     methods: {
 
-      // 清空
+      // 清空 (clear)
       clear: function clear() {
         if (this.files.length) {
           var files = this.files;
           this.files = [];
 
-          // 定位
+          // 定位 (locate)
           this.maps = {};
 
-          // 事件
+          // 事件 (event)
           this.emitInput();
           for (var i = 0; i < files.length; i++) {
             this.emitFile(undefined, files[i]);
@@ -991,7 +991,7 @@
       },
 
 
-      // 选择
+      // 选择 (select)
       get: function get(id) {
         if (!id) {
           return false;
@@ -1005,19 +1005,19 @@
       },
 
 
-      // 添加
+      // 添加 (add)
       add: function add(_files) {
         var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.addIndex;
 
         var files = _files;
         var isArray = files instanceof Array;
 
-        // 不是数组整理成数组
+        // 不是数组整理成数组 (if not array, create array)
         if (!isArray) {
           files = [files];
         }
 
-        // 遍历规范对象
+        // 遍历规范对象 (traverse standard target)
         var addFiles = [];
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
@@ -1052,10 +1052,10 @@
             }, file, {
               response: {},
 
-              progress: '0.00', // 只读
-              speed: 0 // 只读
-              // xhr: false,                // 只读
-              // iframe: false,             // 只读
+              progress: '0.00', // 只读 (read only)
+              speed: 0 // 只读 (read only)
+              // xhr: false,                // 只读 (read only)
+              // iframe: false,             // 只读 (read only)
             });
 
             file.data = _extends({}, this.data, file.data ? file.data : {});
@@ -1063,7 +1063,7 @@
             file.headers = _extends({}, this.headers, file.headers ? file.headers : {});
           }
 
-          // 必须包含 id
+          // 必须包含 id (must include id)
           if (!file.id) {
             file.id = Math.random().toString(36).substr(2);
           }
@@ -1072,30 +1072,30 @@
             continue;
           }
 
-          // 最大数量限制
+          // 最大数量限制 (max count limit)
           if (this.maximum > 1 && addFiles.length + this.files.length >= this.maximum) {
             break;
           }
 
           addFiles.push(file);
 
-          // 最大数量限制
+          // 最大数量限制 (max count limit)
           if (this.maximum === 1) {
             break;
           }
         }
 
-        // 没有文件
+        // 没有文件 (no file)
         if (!addFiles.length) {
           return false;
         }
 
-        // 如果是 1 清空
+        // 如果是 1 清空 (if is 1, then clear)
         if (this.maximum === 1) {
           this.clear();
         }
 
-        // 添加进去 files
+        // 添加进去 files (add files)
         var newFiles = void 0;
         if (index === true || index === 0) {
           newFiles = addFiles.concat(this.files);
@@ -1110,13 +1110,13 @@
 
         this.files = newFiles;
 
-        // 定位
+        // 定位 (locate)
         for (var _i = 0; _i < addFiles.length; _i++) {
           var _file2 = addFiles[_i];
           this.maps[_file2.id] = _file2;
         }
 
-        // 事件
+        // 事件 (event)
         this.emitInput();
         for (var _i2 = 0; _i2 < addFiles.length; _i2++) {
           this.emitFile(addFiles[_i2], undefined);
@@ -1126,7 +1126,7 @@
       },
 
 
-      // 添加表单文件
+      // 添加表单文件 (add form file)
       addInputFile: function addInputFile(el) {
         var files = [];
         if (el.files) {
@@ -1151,7 +1151,7 @@
       },
 
 
-      // 添加 DataTransfer
+      // 添加 DataTransfer (add DataTransfer)
       addDataTransfer: function addDataTransfer(dataTransfer) {
         var _this = this;
 
@@ -1175,7 +1175,7 @@
           return new Promise(function (resolve, reject) {
             var forEach = function forEach(i) {
               var item = items[i];
-              // 结束 文件数量大于 最大数量
+              // 结束 文件数量大于 最大数量 (end if file count greater than max)
               if (!item || _this.maximum > 0 && files.length >= _this.maximum) {
                 return resolve(_this.add(files));
               }
@@ -1202,7 +1202,7 @@
       },
 
 
-      // 获得 entry
+      // 获得 entry (get entry)
       getEntry: function getEntry(entry) {
         var _this2 = this;
 
@@ -1264,7 +1264,7 @@
       },
 
 
-      // 移除
+      // 移除 (remove)
       remove: function remove(id) {
         var file = this.get(id);
         if (file) {
@@ -1280,10 +1280,10 @@
           files.splice(index, 1);
           this.files = files;
 
-          // 定位
+          // 定位 (locate)
           delete this.maps[file.id];
 
-          // 事件
+          // 事件 (event)
           this.emitInput();
           this.emitFile(undefined, file);
         }
@@ -1291,12 +1291,12 @@
       },
 
 
-      // 更新
+      // 更新 (update)
       update: function update(id, data) {
         var file = this.get(id);
         if (file) {
           var newFile = _extends({}, file, data);
-          // 停用必须加上错误
+          // 停用必须加上错误 (abort and add error)
           if (file.fileObject && file.active && !newFile.active && !newFile.error && !newFile.success) {
             newFile.error = 'abort';
           }
@@ -1314,11 +1314,11 @@
           files.splice(index, 1, newFile);
           this.files = files;
 
-          // 删除  旧定位 写入 新定位 （已便支持修改id)
+          // 删除  旧定位 写入 新定位 （已便支持修改id) (remove old location, add new location. Updated to support revised id)
           delete this.maps[file.id];
           this.maps[newFile.id] = newFile;
 
-          // 事件
+          // 事件 (event)
           this.emitInput();
           this.emitFile(newFile, file);
           return newFile;
@@ -1327,7 +1327,7 @@
       },
 
 
-      // 预处理 事件 过滤器
+      // 预处理 事件 过滤器 (prepare event filter)
       emitFilter: function emitFilter(newFile, oldFile) {
         var isPrevent = false;
         this.$emit('input-filter', newFile, oldFile, function () {
@@ -1338,12 +1338,12 @@
       },
 
 
-      // 处理后 事件 分发
+      // 处理后 事件 分发 (post-process event delivery)
       emitFile: function emitFile(newFile, oldFile) {
         this.$emit('input-file', newFile, oldFile);
         if (newFile && newFile.fileObject && newFile.active && (!oldFile || !oldFile.active)) {
           this.uploading++;
-          // 激活
+          // 激活 (activate)
           this.$nextTick(function () {
             var _this3 = this;
 
@@ -1367,11 +1367,11 @@
             }, parseInt(Math.random() * 50 + 50, 10));
           });
         } else if ((!newFile || !newFile.fileObject || !newFile.active) && oldFile && oldFile.fileObject && oldFile.active) {
-          // 停止
+          // 停止 (stop)
           this.uploading--;
         }
 
-        // 自动延续激活
+        // 自动延续激活 (automatic conitnued activation)
         if (this.active && (Boolean(newFile) !== Boolean(oldFile) || newFile.active !== oldFile.active)) {
           this.watchActive(true);
         }
@@ -1381,31 +1381,31 @@
       },
 
 
-      // 上传
+      // 上传 (upload)
       upload: function upload(id) {
         var file = this.get(id);
 
-        // 被删除
+        // 被删除 (deleted)
         if (!file) {
           return Promise.reject('not_exists');
         }
 
-        // 不是文件对象
+        // 不是文件对象 (not file target)
         if (!file.fileObject) {
           return Promise.reject('file_object');
         }
 
-        // 有错误直接响应
+        // 有错误直接响应 (respond to error)
         if (file.error) {
           return Promise.reject(file.error);
         }
 
-        // 已完成直接响应
+        // 已完成直接响应 (respond to completion)
         if (file.success) {
           return Promise.resolve(file);
         }
 
-        // 后缀
+        // 后缀 (extensions)
         var extensions = this.extensions;
         if (extensions && (extensions.length || typeof extensions.length === 'undefined')) {
           if ((typeof extensions === 'undefined' ? 'undefined' : _typeof(extensions)) !== 'object' || !(extensions instanceof RegExp)) {
@@ -1423,7 +1423,7 @@
           }
         }
 
-        // 大小
+        // 大小 (size)
         if (this.size > 0 && file.size >= 0 && file.size > this.size) {
           return Promise.reject('size');
         }
@@ -1512,15 +1512,15 @@
         var speedTime = 0;
         var speedLoaded = 0;
 
-        // 进度条
+        // 进度条 (progress bar)
         xhr.upload.onprogress = function (e) {
-          // 还未开始上传 已删除 未激活
+          // 还未开始上传 已删除 未激活 (upload not started, deleted, not activated)
           file = _this4.get(file);
           if (!e.lengthComputable || !file || !file.fileObject || !file.active) {
             return;
           }
 
-          // 进度 速度 每秒更新一次
+          // 进度 速度 每秒更新一次 (progress speed, 1sec interval)
           var speedTime2 = Math.round(Date.now() / 1000);
           if (speedTime2 === speedTime) {
             return;
@@ -1534,7 +1534,7 @@
           speedLoaded = e.loaded;
         };
 
-        // 检查激活状态
+        // 检查激活状态 (check activation status)
         var interval = setInterval(function () {
           file = _this4.get(file);
           if (file && file.fileObject && !file.success && !file.error && file.active) {
@@ -1555,7 +1555,7 @@
         return new Promise(function (resolve, reject) {
           var complete = void 0;
           var fn = function fn(e) {
-            // 已经处理过了
+            // 已经处理过了 (already processed)
             if (complete) {
               return;
             }
@@ -1567,27 +1567,27 @@
 
             file = _this4.get(file);
 
-            // 不存在直接响应
+            // 不存在直接响应 (does not exist)
             if (!file) {
               return reject('not_exists');
             }
 
-            // 不是文件对象
+            // 不是文件对象 (not file object)
             if (!file.fileObject) {
               return reject('file_object');
             }
 
-            // 有错误自动响应
+            // 有错误自动响应 (error)
             if (file.error) {
               return reject(file.error);
             }
 
-            // 未激活
+            // 未激活 (not activated)
             if (!file.active) {
               return reject('abort');
             }
 
-            // 已完成 直接相应
+            // 已完成 直接相应 (completed)
             if (file.success) {
               return resolve(file);
             }
@@ -1627,25 +1627,25 @@
               }
             }
 
-            // 更新
+            // 更新 (update)
             file = _this4.update(file, data);
 
-            // 相应错误
+            // 相应错误 (error)
             if (file.error) {
               return reject(file.error);
             }
 
-            // 响应
+            // 响应 (return)
             return resolve(file);
           };
 
-          // 事件
+          // 事件 (event)
           xhr.onload = fn;
           xhr.onerror = fn;
           xhr.onabort = fn;
           xhr.ontimeout = fn;
 
-          // 超时
+          // 超时 (timeout)
           if (file.timeout) {
             xhr.timeout = file.timeout;
           }
@@ -1655,10 +1655,10 @@
             xhr.setRequestHeader(key, file.headers[key]);
           }
 
-          // 更新 xhr
+          // 更新 xhr (update xhr)
           file = _this4.update(file, { xhr: xhr });
 
-          // 开始上传
+          // 开始上传 (start upload)
           xhr.send(body);
         });
       },
@@ -1731,12 +1731,12 @@
           setTimeout(function () {
             file = _this5.update(file, { iframe: iframe });
 
-            // 不存在
+            // 不存在 (does not exist)
             if (!file) {
               return reject('not_exists');
             }
 
-            // 定时检查
+            // 定时检查 (check on timed interval)
             var interval = setInterval(function () {
               file = _this5.get(file);
               if (file && file.fileObject && !file.success && !file.error && file.active) {
@@ -1753,7 +1753,7 @@
 
             var complete = void 0;
             var fn = function fn(e) {
-              // 已经处理过了
+              // 已经处理过了 (already processed)
               if (complete) {
                 return;
               }
@@ -1764,32 +1764,32 @@
                 interval = false;
               }
 
-              // 关闭 esc 事件
+              // 关闭 esc 事件 (close esc event)
               document.body.removeEventListener('keydown', onKeydown);
 
               file = _this5.get(file);
 
-              // 不存在直接响应
+              // 不存在直接响应 (does not exist)
               if (!file) {
                 return reject('not_exists');
               }
 
-              // 不是文件对象
+              // 不是文件对象 (not target file)
               if (!file.fileObject) {
                 return reject('file_object');
               }
 
-              // 有错误自动响应
+              // 有错误自动响应 (error)
               if (file.error) {
                 return reject(file.error);
               }
 
-              // 未激活
+              // 未激活 (not active)
               if (!file.active) {
                 return reject('abort');
               }
 
-              // 已完成 直接相应
+              // 已完成 直接相应 (completed)
               if (file.success) {
                 return resolve(file);
               }
@@ -1828,26 +1828,26 @@
                 data.response = response;
               }
 
-              // 更新
+              // 更新 (update)
               file = _this5.update(file, data);
 
               if (file.error) {
                 return reject(file.error);
               }
 
-              // 响应
+              // 响应 (return)
               return resolve(file);
             };
 
-            // 添加事件
+            // 添加事件 (add event)
             iframe.onload = fn;
             iframe.onerror = fn;
             iframe.onabort = fn;
 
-            // 禁止 esc 键
+            // 禁止 esc 键 (stop esc key)
             document.body.addEventListener('keydown', onKeydown);
 
-            // 提交
+            // 提交 (submit)
             form.submit();
           }, 50);
         }).then(function (res) {
@@ -1886,7 +1886,7 @@
           return;
         }
 
-        // 移除挂载
+        // 移除挂载 (remove mounting)
         if (this.dropElement) {
           try {
             document.removeEventListener('dragenter', this.onDragenter, false);
@@ -2027,9 +2027,9 @@
 
       var group = isOldIE ? css.media || 'default' : id;
       var style = styles[group] || (styles[group] = { ids: [], parts: [], element: undefined });
-
       if (!style.ids.includes(id)) {
         var code = css.source;
+
         var index = style.ids.length;
 
         style.ids.push(id);

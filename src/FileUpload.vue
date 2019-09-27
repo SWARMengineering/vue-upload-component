@@ -194,14 +194,14 @@ export default {
     input.type = 'file'
     input.multiple = true
 
-    // html5 特征
+    // html5 特征 (html5 feature)
     if (window.FormData && input.files) {
-      // 上传目录特征
+      // 上传目录特征 (upload menu feature)
       if (typeof input.webkitdirectory === 'boolean' || typeof input.directory === 'boolean') {
         this.features.directory = true
       }
 
-      // 拖拽特征
+      // 拖拽特征 (drag and drop feature)
       if (this.features.html5 && typeof input.ondrop !== 'undefined') {
         this.features.drop = true
       }
@@ -209,7 +209,7 @@ export default {
       this.features.html5 = false
     }
 
-    // files 定位缓存
+    // files 定位缓存 (files location cache)
     this.maps = {}
     if (this.files) {
       for (let i = 0; i < this.files.length; i++) {
@@ -220,15 +220,15 @@ export default {
 
     this.$nextTick(function () {
 
-      // 更新下父级
+      // 更新下父级 (update parent)
       if (this.$parent) {
         this.$parent.$forceUpdate()
-        // 拖拽渲染
+        // 拖拽渲染 (drag and drop render)
         this.$parent.$nextTick(() => {
           this.watchDrop(this.drop)
         })
       } else {
-        // 拖拽渲染
+        // 拖拽渲染 (drag and drop render)
         this.watchDrop(this.drop)
       }
     })
@@ -239,24 +239,24 @@ export default {
    * @return {[type]} [description]
    */
   beforeDestroy() {
-    // 已销毁
+    // 已销毁 (already destroyed)
     this.destroy = true
 
-    // 设置成不激活
+    // 设置成不激活 (set to not active)
     this.active = false
 
-    // 销毁拖拽事件
+    // 销毁拖拽事件 (disable drag and drop event)
     this.watchDrop(false)
   },
 
   computed: {
     /**
-     * uploading 正在上传的线程
+     * uploading 正在上传的线程 (uploading thread)
      * @return {[type]} [description]
      */
 
     /**
-     * uploaded 文件列表是否全部已上传
+     * uploaded 文件列表是否全部已上传 (whether file list has been completely uploaded)
      * @return {[type]} [description]
      */
     uploaded() {
@@ -309,7 +309,7 @@ export default {
 
       let oldMaps = this.maps
 
-      // 重写 maps 缓存
+      // 重写 maps 缓存 (rewrite maps cache)
       this.maps = {}
       for (let i = 0; i < this.files.length; i++) {
         let file = this.files[i]
@@ -336,16 +336,16 @@ export default {
 
   methods: {
 
-    // 清空
+    // 清空 (clear)
     clear() {
       if (this.files.length) {
         let files = this.files
         this.files = []
 
-        // 定位
+        // 定位 (locate)
         this.maps = {}
 
-        // 事件
+        // 事件 (event)
         this.emitInput()
         for (let i = 0; i < files.length; i++) {
           this.emitFile(undefined, files[i])
@@ -354,7 +354,7 @@ export default {
       return true
     },
 
-    // 选择
+    // 选择 (select)
     get(id) {
       if (!id) {
         return false
@@ -367,17 +367,17 @@ export default {
       return this.maps[id] || false
     },
 
-    // 添加
+    // 添加 (add)
     add(_files, index = this.addIndex) {
       let files = _files
       let isArray = files instanceof Array
 
-      // 不是数组整理成数组
+      // 不是数组整理成数组 (if not array, create array)
       if (!isArray) {
         files = [files]
       }
 
-      // 遍历规范对象
+      // 遍历规范对象 (traverse standard target)
       let addFiles = []
       for (let i = 0; i < files.length; i++) {
         let file = files[i]
@@ -414,7 +414,7 @@ export default {
             ...file,
             response: {},
 
-            progress: '0.00',          // 只读
+            progress: '0.00',          // 只读 (read only)
             speed: 0,                  // 只读
             // xhr: false,                // 只读
             // iframe: false,             // 只读
@@ -431,7 +431,7 @@ export default {
           }
         }
 
-        // 必须包含 id
+        // 必须包含 id (must include id)
         if (!file.id) {
           file.id = Math.random().toString(36).substr(2)
         }
@@ -440,31 +440,31 @@ export default {
           continue
         }
 
-        // 最大数量限制
+        // 最大数量限制 (max count limit)
         if (this.maximum > 1 && (addFiles.length + this.files.length) >= this.maximum) {
           break
         }
 
         addFiles.push(file)
 
-        // 最大数量限制
+        // 最大数量限制 (max count limit)
         if (this.maximum === 1) {
           break
         }
       }
 
-      // 没有文件
+      // 没有文件 (no file)
       if (!addFiles.length) {
         return false
       }
 
-      // 如果是 1 清空
+      // 如果是 1 清空 (if is 1, clear)
       if (this.maximum === 1) {
         this.clear()
       }
 
 
-      // 添加进去 files
+      // 添加进去 files (add to files)
       let newFiles
       if (index === true || index === 0) {
         newFiles = addFiles.concat(this.files)
@@ -477,13 +477,13 @@ export default {
 
       this.files = newFiles
 
-      // 定位
+      // 定位 (locate)
       for (let i = 0; i < addFiles.length; i++) {
         let file = addFiles[i]
         this.maps[file.id] = file
       }
 
-      // 事件
+      // 事件 (event)
       this.emitInput()
       for (let i = 0; i < addFiles.length; i++) {
         this.emitFile(addFiles[i], undefined)
@@ -494,7 +494,7 @@ export default {
 
 
 
-    // 添加表单文件
+    // 添加表单文件 (add form file)
     addInputFile(el) {
       let files = []
       if (el.files) {
@@ -519,7 +519,7 @@ export default {
     },
 
 
-    // 添加 DataTransfer
+    // 添加 DataTransfer (add datatransfer)
     addDataTransfer(dataTransfer) {
       let files = []
       if (dataTransfer.items && dataTransfer.items.length) {
@@ -541,7 +541,7 @@ export default {
         return new Promise((resolve, reject) => {
           let forEach = (i) => {
             let item = items[i]
-            // 结束 文件数量大于 最大数量
+            // 结束 文件数量大于 最大数量 (end if file count > max limit)
             if (!item || (this.maximum > 0 && files.length >= this.maximum)) {
               return resolve(this.add(files))
             }
@@ -568,7 +568,7 @@ export default {
     },
 
 
-    // 获得 entry
+    // 获得 entry (get entry)
     getEntry(entry, path = '') {
       return new Promise((resolve, reject) => {
         if (entry.isFile) {
@@ -629,7 +629,7 @@ export default {
       return true
     },
 
-    // 移除
+    // 移除 (remove)
     remove(id) {
       let file = this.get(id)
       if (file) {
@@ -645,17 +645,17 @@ export default {
         files.splice(index, 1)
         this.files = files
 
-        // 定位
+        // 定位 (locate)
         delete this.maps[file.id]
 
-        // 事件
+        // 事件 (event)
         this.emitInput()
         this.emitFile(undefined, file)
       }
       return file
     },
 
-    // 更新
+    // 更新 (update)
     update(id, data) {
       let file = this.get(id)
       if (file) {
@@ -663,7 +663,7 @@ export default {
           ...file,
           ...data
         }
-        // 停用必须加上错误
+        // 停用必须加上错误 (abort and add error)
         if (file.fileObject && file.active && !newFile.active && !newFile.error && !newFile.success) {
           newFile.error = 'abort'
         }
@@ -681,11 +681,11 @@ export default {
         files.splice(index, 1, newFile)
         this.files = files
 
-        // 删除  旧定位 写入 新定位 （已便支持修改id)
+        // 删除  旧定位 写入 新定位 （已便支持修改id) (remove old location, add new location. Updated to support revised id)
         delete this.maps[file.id]
         this.maps[newFile.id] = newFile
 
-        // 事件
+        // 事件 (event)
         this.emitInput()
         this.emitFile(newFile, file)
         return newFile
@@ -695,7 +695,7 @@ export default {
 
 
 
-    // 预处理 事件 过滤器
+    // 预处理 事件 过滤器 (prepare event filter)
     emitFilter(newFile, oldFile) {
       let isPrevent = false
       this.$emit('input-filter', newFile, oldFile, function () {
@@ -705,12 +705,12 @@ export default {
       return isPrevent
     },
 
-    // 处理后 事件 分发
+    // 处理后 事件 分发 (post-process event delivery)
     emitFile(newFile, oldFile) {
       this.$emit('input-file', newFile, oldFile)
       if (newFile && newFile.fileObject && newFile.active && (!oldFile || !oldFile.active)) {
         this.uploading++
-        // 激活
+        // 激活 (activate)
         this.$nextTick(function () {
           setTimeout(() => {
             this.upload(newFile).then(() => {
@@ -732,11 +732,11 @@ export default {
           }, parseInt(Math.random() * 50 + 50, 10))
         })
       } else if ((!newFile || !newFile.fileObject || !newFile.active) && oldFile && oldFile.fileObject && oldFile.active) {
-        // 停止
+        // 停止 (stop)
         this.uploading--
       }
 
-      // 自动延续激活
+      // 自动延续激活 (automatic continued activation)
       if (this.active && (Boolean(newFile) !== Boolean(oldFile) || newFile.active !== oldFile.active)) {
         this.watchActive(true)
       }
@@ -747,31 +747,31 @@ export default {
     },
 
 
-    // 上传
+    // 上传 (upload)
     upload(id) {
       let file = this.get(id)
 
-      // 被删除
+      // 被删除 (deleted)
       if (!file) {
         return Promise.reject('not_exists')
       }
 
-      // 不是文件对象
+      // 不是文件对象 (not file target)
       if (!file.fileObject) {
         return Promise.reject('file_object')
       }
 
-      // 有错误直接响应
+      // 有错误直接响应 (respond to error)
       if (file.error) {
         return Promise.reject(file.error)
       }
 
-      // 已完成直接响应
+      // 已完成直接响应 (respondt o completion)
       if (file.success) {
         return Promise.resolve(file)
       }
 
-      // 后缀
+      // 后缀 (extensions)
       let extensions = this.extensions
       if (extensions && (extensions.length || typeof extensions.length === 'undefined')) {
         if (typeof extensions !== 'object' || !(extensions instanceof RegExp)) {
@@ -785,7 +785,7 @@ export default {
         }
       }
 
-      // 大小
+      // 大小 (size)
       if (this.size > 0 && file.size >= 0 && file.size > this.size) {
         return Promise.reject('size')
       }
@@ -875,15 +875,15 @@ export default {
       let speedTime = 0
       let speedLoaded = 0
 
-      // 进度条
+      // 进度条 (progress bar)
       xhr.upload.onprogress = (e) => {
-        // 还未开始上传 已删除 未激活
+        // 还未开始上传 已删除 未激活 (upload not started, deleted, not activated)
         file = this.get(file)
         if (!e.lengthComputable || !file || !file.fileObject || !file.active) {
           return
         }
 
-        // 进度 速度 每秒更新一次
+        // 进度 速度 每秒更新一次 (progress speed, 1sec interval)
         let speedTime2 = Math.round(Date.now() / 1000)
         if (speedTime2 === speedTime) {
           return
@@ -897,7 +897,7 @@ export default {
         speedLoaded = e.loaded
       }
 
-      // 检查激活状态
+      // 检查激活状态 (check activation status)
       let interval = setInterval(() => {
         file = this.get(file)
         if (file && file.fileObject && !file.success && !file.error && file.active) {
@@ -919,7 +919,7 @@ export default {
       return new Promise((resolve, reject) => {
         let complete
         let fn = (e) => {
-          // 已经处理过了
+          // 已经处理过了 (already processed)
           if (complete) {
             return
           }
@@ -931,28 +931,28 @@ export default {
 
           file = this.get(file)
 
-          // 不存在直接响应
+          // 不存在直接响应 (does not exist)
           if (!file) {
             return reject('not_exists')
           }
 
-          // 不是文件对象
+          // 不是文件对象 (not file target)
           if (!file.fileObject) {
             return reject('file_object')
           }
 
-          // 有错误自动响应
+          // 有错误自动响应 (respond to error)
           if (file.error) {
             return reject(file.error)
           }
 
-          // 未激活
+          // 未激活 (not active)
           if (!file.active) {
             return reject('abort')
           }
 
 
-          // 已完成 直接相应
+          // 已完成 直接相应 (respond to completion)
           if (file.success) {
             return resolve(file)
           }
@@ -992,25 +992,25 @@ export default {
             }
           }
 
-          // 更新
+          // 更新 (update)
           file = this.update(file, data)
 
-          // 相应错误
+          // 相应错误 (error)
           if (file.error) {
             return reject(file.error)
           }
 
-          // 响应
+          // 响应 (return)
           return resolve(file)
         }
 
-        // 事件
+        // 事件 (event)
         xhr.onload = fn
         xhr.onerror = fn
         xhr.onabort = fn
         xhr.ontimeout = fn
 
-        // 超时
+        // 超时 (timeout)
         if (file.timeout) {
           xhr.timeout = file.timeout
         }
@@ -1020,10 +1020,10 @@ export default {
           xhr.setRequestHeader(key, file.headers[key])
         }
 
-        // 更新 xhr
+        // 更新 xhr (update xhr)
         file = this.update(file, { xhr })
 
-        // 开始上传
+        // 开始上传 (start upload)
         xhr.send(body)
       })
     },
@@ -1105,12 +1105,12 @@ export default {
         setTimeout(() => {
           file = this.update(file, { iframe })
 
-          // 不存在
+          // 不存在 (not exist)
           if (!file) {
             return reject('not_exists')
           }
 
-          // 定时检查
+          // 定时检查 (check on time interval)
           let interval = setInterval(() => {
             file = this.get(file)
             if (file && file.fileObject && !file.success && !file.error && file.active) {
@@ -1128,7 +1128,7 @@ export default {
 
           let complete
           let fn = (e) => {
-            // 已经处理过了
+            // 已经处理过了 (already processed)
             if (complete) {
               return
             }
@@ -1140,32 +1140,32 @@ export default {
               interval = false
             }
 
-            // 关闭 esc 事件
+            // 关闭 esc 事件 (close esc event)
             document.body.removeEventListener('keydown', onKeydown)
 
             file = this.get(file)
 
-            // 不存在直接响应
+            // 不存在直接响应 (not exist)
             if (!file) {
               return reject('not_exists')
             }
 
-            // 不是文件对象
+            // 不是文件对象 (not file target)
             if (!file.fileObject) {
               return reject('file_object')
             }
 
-            // 有错误自动响应
+            // 有错误自动响应 (respond to error)
             if (file.error) {
               return reject(file.error)
             }
 
-            // 未激活
+            // 未激活 (not active)
             if (!file.active) {
               return reject('abort')
             }
 
-            // 已完成 直接相应
+            // 已完成 直接相应 (respond to completion)
             if (file.success) {
               return resolve(file)
             }
@@ -1205,28 +1205,28 @@ export default {
               data.response = response
             }
 
-            // 更新
+            // 更新 (update)
             file = this.update(file, data)
 
             if (file.error) {
               return reject(file.error)
             }
 
-            // 响应
+            // 响应 (return)
             return resolve(file)
           }
 
 
-          // 添加事件
+          // 添加事件 (add event)
           iframe.onload = fn
           iframe.onerror = fn
           iframe.onabort = fn
 
 
-          // 禁止 esc 键
+          // 禁止 esc 键 (stop esc key)
           document.body.addEventListener('keydown', onKeydown)
 
-          // 提交
+          // 提交 (submit)
           form.submit()
         }, 50)
       }).then(function (res) {
@@ -1246,7 +1246,7 @@ export default {
       while ((file = this.files[index])) {
         index++
         if (!file.fileObject) {
-          // 不是文件对象
+          // 不是文件对象 (not file target)
         } else if (active && !this.destroy) {
           if (this.uploading >= this.thread || (this.uploading && !this.features.html5)) {
             break
@@ -1272,7 +1272,7 @@ export default {
         return
       }
 
-      // 移除挂载
+      // 移除挂载 (remove mount)
       if (this.dropElement) {
         try {
           document.removeEventListener('dragenter', this.onDragenter, false)
